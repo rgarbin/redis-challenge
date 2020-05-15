@@ -7,10 +7,10 @@ import java.util.List;
 @Component
 public class RedisServer {
 
-    private WeakMap<String, Object> redis;
+    private TimeoutMap<String, Object> redis;
 
     public RedisServer() {
-        redis = new WeakMap<>();
+        redis = new TimeoutMap<>();
     }
 
     public String set(String key, Object value) {

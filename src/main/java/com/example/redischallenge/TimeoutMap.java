@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class WeakMap<K, V> extends HashMap<K, V> implements Map<K, V> {
+public class TimeoutMap<K, V> extends HashMap<K, V> implements Map<K, V> {
 
     private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(5);
 
@@ -15,7 +15,7 @@ public class WeakMap<K, V> extends HashMap<K, V> implements Map<K, V> {
 
         EXECUTOR.schedule(() -> {
             super.remove(key);
-        }, ms, TimeUnit.MILLISECONDS);
+        }, ms, TimeUnit.SECONDS);
     }
 
 }
