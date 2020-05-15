@@ -12,21 +12,35 @@ public class PromptCommand {
 
     @Autowired RedisServer redis;
 
-    @ShellMethod("Setting a new key ")
-    public void set(String key, String value) {
-        redis.set(key, value);
+    @ShellMethod("Setting a new key")
+    public String set(String key, String value) {
+        return redis.set(key, value);
     }
 
-    @ShellMethod("Getting a key")
-    public String get(String key) {
+    @ShellMethod("Setting a new key with time to expire")
+    public String set(String key, String value, Integer seconds) {
+        return redis.set(key, value, seconds);
+    }
+
+    @ShellMethod("Getting a key-value")
+    public Object get(String key) {
         return redis.get(key);
     }
 
-    @ShellMethod("Removing  keys")
-    public void del(List<String> keys) {
-        for (String key : keys) {
-            redis.del(key);
-        }
+    @ShellMethod("Removing keys")
+    public Integer del(List<String> keys) {
+        return redis.del(keys);
     }
+
+    @ShellMethod("DB size")
+    public Integer dbsize() {
+        return redis.dbsize();
+    }
+
+    @ShellMethod("Increase keys value")
+    public Integer incr(String key) {
+        return redis.incr(key);
+    }
+
 
 }
