@@ -8,6 +8,12 @@ To run:
 ```bash
 $ make test
 $ make run
+
+curl -d 'VALUE' -X POST "http://localhost:8080/cmd/KEY"
+curl -X GET "http://localhost:8080/cmd?key=KEY"    
+curl -X GET "http://localhost:8080/cmd/dbsize"    
+curl -X GET "http://localhost:8080/cmd/incr/KEY"    
+curl -X DELETE "http://localhost:8080/cmd/KEY"
 ```
 
 
