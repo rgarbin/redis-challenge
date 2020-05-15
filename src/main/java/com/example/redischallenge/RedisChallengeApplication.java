@@ -1,4 +1,4 @@
-package com.redischallenge.redischallenge;
+package com.example.redischallenge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
