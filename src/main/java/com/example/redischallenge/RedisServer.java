@@ -2,17 +2,15 @@ package com.example.redischallenge;
 
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class RedisServer {
 
-    private Map<String, Object> redis;
+    private WeakMap<String, Object> redis;
 
     public RedisServer() {
-        redis = new HashMap<>();
+        redis = new WeakMap<>();
     }
 
     public String set(String key, Object value) {
@@ -21,7 +19,11 @@ public class RedisServer {
 
     public String set(String key, Object value, Integer seconds) {
         try {
-            redis.put(key, value);
+            if (seconds == null) {
+                redis.put(key, value);
+            } else {
+                redis.put(key, value, seconds);
+            }
         } catch (Exception e) {
             return "NOK";
         }
