@@ -34,18 +34,18 @@ class RedisServerTest {
 
     @Test
     void setWhenExpire() throws InterruptedException {
-        redisServer.set("key-0", "value-0", 500);
-        redisServer.set("key-1", "value-1", 600);
-        redisServer.set("key-2", "value-2", 700);
-        redisServer.set("key-3", "value-3", 2000);
-        redisServer.set("key-4", "value-4", 3000);
+        redisServer.set("key-0", "value-0", 5);
+        redisServer.set("key-1", "value-1", 10);
+        redisServer.set("key-2", "value-2", 15);
+        redisServer.set("key-3", "value-3", 50);
+        redisServer.set("key-4", "value-4", 60);
 
         assertEquals("value-0", redisServer.get("key-0"));
         assertEquals("value-1", redisServer.get("key-1"));
         assertEquals("value-2", redisServer.get("key-2"));
         assertEquals("value-3", redisServer.get("key-3"));
         assertEquals("value-4", redisServer.get("key-4"));
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(30000);
         assertEquals(null, redisServer.get("key-0"));
         assertEquals(null, redisServer.get("key-1"));
         assertEquals(null, redisServer.get("key-2"));
