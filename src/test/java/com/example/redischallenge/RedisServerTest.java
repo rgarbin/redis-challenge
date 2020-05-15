@@ -55,11 +55,10 @@ class RedisServerTest {
     }
 
     @Test
-    void setoverwritten() {
-        String result = redisServer.set("key", 10);
-        result = redisServer.set("key", 20);
+    void setWhenOverwritten() {
+        redisServer.set("key", 10);
+        String result = redisServer.set("key", 20);
         assertEquals("OK", result);
-
         assertEquals(20, redisServer.get("key"));
     }
 
