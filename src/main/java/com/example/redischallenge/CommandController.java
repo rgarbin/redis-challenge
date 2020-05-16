@@ -41,7 +41,12 @@ public class CommandController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/cmd/zadd/{set}")
-    Map zadd(@PathVariable(value = "set") String set, @RequestBody Map<String, Integer> map) {
+    Integer zadd(@PathVariable(value = "set") String set, @RequestBody Map<String, Integer> map) {
         return redisServer.zadd(map, set);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/cmd/zcard/{set}")
+    Integer zcard(@PathVariable(value = "set") String set) {
+        return redisServer.zcard(set);
     }
 }

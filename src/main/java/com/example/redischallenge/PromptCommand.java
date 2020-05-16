@@ -55,7 +55,7 @@ public class PromptCommand {
     }
 
     @ShellMethod("Adds all the specified members with the specified scores to the sorted set stored at key")
-    public Map zadd( @ShellOption  String subsetName,
+    public Integer zadd( @ShellOption  String subsetName,
                      @ShellOption(defaultValue = "") Integer arg1,
                      @ShellOption(defaultValue = "") String value1,
                      @ShellOption(defaultValue = "") Integer arg2,
@@ -81,6 +81,11 @@ public class PromptCommand {
         });
         
         return redis.zadd(adjustedList, subsetName);
+    }
+
+    @ShellMethod("Returns the sorted set cardinality (number of elements) of the sorted set stored at key.")
+    public Integer zcard(String key) {
+        return redis.zcard(key);
     }
 
 }

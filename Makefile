@@ -4,7 +4,7 @@ PROJECT_NAME		?= $(shell basename `pwd` | tr '[:upper:]' '[:lower:]' | tr -d '[:
 .DEFAULT_GOAL := help
 
 test: 
-	@$(MVN_CMD) -Dtest=RedisServerTest test
+	@$(MVN_CMD) -Dtest=RedisServerTest test 
 
 build: 
 	@$(MVN_CMD) clean install -U -DskipTests=true

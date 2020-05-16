@@ -69,17 +69,26 @@ public class RedisServer {
         return 0;
     }
 
-    public Map<String, Integer> zadd(Map<String, Integer> subset, String subsetName) {
+    public Integer zadd(Map<String, Integer> subset, String subsetName) {
 
+        Integer count = 0;
         for (Map.Entry<String, Integer> entry : subset.entrySet()) {
+            if (!treeMap.containsKey(subsetName + "_" + entry.getKey())) {
+                count++;
+            }
             treeMap.put(subsetName + "_" + entry.getKey(), entry.getValue());
         }
 
+        return count;
+    }
+
+    public Integer zcard(String subsetName) {
         TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
         Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
 
-        return result;
+        return result.size();
     }
+
 
     private Map<String, Integer> getSubset(String subsetName, TreeMap<String, Integer> stringIntegerMap) {
         LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
