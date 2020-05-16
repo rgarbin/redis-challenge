@@ -113,9 +113,6 @@ class RedisServerTest {
 
     @Test
     void zadd() {
-        String subsetName  = "subset_";
-        String subsetName2  = "subset2_";
-
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("A", 3);
         hashMap.put("B", 2);
@@ -123,9 +120,9 @@ class RedisServerTest {
         Map<String, Integer> sortedList = redisServer.zadd(hashMap, "subset");
 
         // Checking key-value
-        assertEquals(1, sortedList.get(subsetName + "C"));
-        assertEquals(2, sortedList.get(subsetName + "B"));
-        assertEquals(3, sortedList.get(subsetName + "A"));
+        assertEquals(1, sortedList.get("C"));
+        assertEquals(2, sortedList.get("B"));
+        assertEquals(3, sortedList.get("A"));
 
         // Checking order
         assertEquals(Arrays.asList(1, 2, 3).toString(), sortedList.values().toString());
@@ -140,10 +137,10 @@ class RedisServerTest {
         Map<String, Integer> sortedList2 = redisServer.zadd(hashMap1, "subset");
 
         // Checking key-value
-        assertEquals(1, sortedList2.get(subsetName + "A"));
-        assertEquals(1, sortedList2.get(subsetName + "D"));
-        assertEquals(2, sortedList2.get(subsetName + "B"));
-        assertEquals(3, sortedList2.get(subsetName + "C"));
+        assertEquals(1, sortedList2.get("A"));
+        assertEquals(1, sortedList2.get("D"));
+        assertEquals(2, sortedList2.get("B"));
+        assertEquals(3, sortedList2.get("C"));
 
         //Checking order
         assertEquals(Arrays.asList(1, 1, 2, 3).toString(), sortedList2.values().toString());
@@ -157,9 +154,9 @@ class RedisServerTest {
         Map<String, Integer> sortedListSubSet2 = redisServer.zadd(hashMapSubset2, "subset2");
 
         // Checking key-value
-        assertEquals(8, sortedListSubSet2.get(subsetName2 + "C"));
-        assertEquals(9, sortedListSubSet2.get(subsetName2 + "B"));
-        assertEquals(10, sortedListSubSet2.get(subsetName2 + "A"));
+        assertEquals(8, sortedListSubSet2.get("C"));
+        assertEquals(9, sortedListSubSet2.get("B"));
+        assertEquals(10, sortedListSubSet2.get("A"));
         assertEquals(Arrays.asList(8, 9, 10).toString(), sortedListSubSet2.values().toString());
     }
 

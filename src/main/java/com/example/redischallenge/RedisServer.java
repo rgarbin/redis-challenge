@@ -1,5 +1,6 @@
 package com.example.redischallenge;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 
@@ -73,7 +74,7 @@ public class RedisServer {
         for (Map.Entry<String, Integer> entry : subset.entrySet()) {
             treeMap.put(subsetName + "_" + entry.getKey(), entry.getValue());
         }
-        
+
         TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
         Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
 
@@ -85,7 +86,8 @@ public class RedisServer {
 
         for(Map.Entry<String, Integer> entry : stringIntegerMap.entrySet()) {
             if (entry.getKey().startsWith(subsetName)) {
-                linkedHashMap.put(entry.getKey(), entry.getValue());
+                String str = StringUtils.remove(entry.getKey(), subsetName + "_");
+                linkedHashMap.put(str, entry.getValue());
             }
         }
 
