@@ -69,7 +69,7 @@ public class RedisServer {
         return 0;
     }
 
-    public Map<String, Integer> zadd(HashMap<String, Integer> subset, String subsetName) {
+    public Map<String, Integer> zadd(Map<String, Integer> subset, String subsetName) {
 
         for (Map.Entry<String, Integer> entry : subset.entrySet()) {
             treeMap.put(subsetName + "_" + entry.getKey(), entry.getValue());

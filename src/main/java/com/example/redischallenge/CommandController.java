@@ -4,6 +4,8 @@ package com.example.redischallenge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 public class CommandController {
@@ -33,10 +35,13 @@ public class CommandController {
         return redisServer.dbsize();
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/cmd/incr/{key}")
+    @RequestMapping(method = RequestMethod.PUT, path = "/cmd/incr/{key}")
     Integer incr(@PathVariable(value = "key") String key) {
         return redisServer.incr(key);
     }
 
-
+    @RequestMapping(method = RequestMethod.POST, path = "/cmd/zadd/{set}")
+    Map zadd(@PathVariable(value = "set") String set, @RequestBody Map<String, Integer> map) {
+        return redisServer.zadd(map, set);
+    }
 }
