@@ -117,9 +117,17 @@ public class RedisServer {
         Map<String, Integer> sortedList =  getSubset(subsetName, stringIntegerMap);
 
         LinkedHashMap<String, Integer> resultMap =  new LinkedHashMap<>();
-        Set<String> resultList = new HashSet<>();
+        LinkedHashSet<String> resultList = new LinkedHashSet<>();
 
-        if (start > 0 && end > 0) {
+        if (start < 0) {
+            start = adjustNegativeIndex(start, sortedList.size());
+        }
+
+        if (end < 0) {
+            end = adjustNegativeIndex(end, sortedList.size());
+        }
+
+        if (start >= 0 && end > 0) {
             Integer index = 1;
             for (Map.Entry<String, Integer> entry : sortedList.entrySet()) {
                 if (index >= start && index <= end) {
@@ -137,6 +145,10 @@ public class RedisServer {
             return resultMap;
         }
         return resultList;
+    }
+
+    private Integer adjustNegativeIndex(Integer index, int size) {
+        return (size + 1) + index;
     }
 
     private Map<String, Integer> getSubset(String subsetName, TreeMap<String, Integer> stringIntegerMap) {

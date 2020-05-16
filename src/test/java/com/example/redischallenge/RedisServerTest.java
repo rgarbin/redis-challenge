@@ -166,9 +166,9 @@ class RedisServerTest {
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put("A", 3);
         hashMap.put("B", 2);
+        hashMap.put("E", 1);
         hashMap.put("C", 1);
         hashMap.put("D", 1);
-        hashMap.put("E", 1);
         redisServer.zadd(hashMap, "subset");
 
         Set<String> setList = (Set<String>) redisServer.zrange("subset", 1, 3, null);
@@ -176,6 +176,23 @@ class RedisServerTest {
 
         Map<String, Integer> mapList = (Map<String, Integer>) redisServer.zrange("subset", 4, 5, "WITHSCORES");
         assertEquals("{B=2, A=3}", mapList.toString());
+    }
+
+    @Test
+    void zrangeWhenNegativeIndex() {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("A", 3);
+        hashMap.put("B", 2);
+        hashMap.put("C", 1);
+        hashMap.put("D", 1);
+        hashMap.put("E", 1);
+        redisServer.zadd(hashMap, "subset");
+
+        Set<String> setList = (Set<String>) redisServer.zrange("subset", 1, -1, null);
+        assertEquals(Arrays.asList("C", "D", "E", "B", "A").toString(), setList.toString());
+
+        Set<String> setList2 = (Set<String>) redisServer.zrange("subset", -2, -1, null);
+        assertEquals(Arrays.asList("B", "A").toString(), setList2.toString());
     }
 
 }
