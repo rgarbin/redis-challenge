@@ -2,15 +2,18 @@ package com.example.redischallenge;
 
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+
+import java.util.*;
 
 @Component
 public class RedisServer {
 
     private TimeoutMap<String, Object> redis;
+    private TreeMap<String, Integer> treeMap;
 
     public RedisServer() {
         redis = new TimeoutMap<>();
+        treeMap = new TreeMap<String, Integer>();
     }
 
     public String set(String key, Object value) {
@@ -37,12 +40,12 @@ public class RedisServer {
         return null;
     }
 
-    public Integer del(List<String> keys) {
+    public Integer del(String[] args) {
         Integer count = 0;
 
-        for (String key : keys) {
-            if (redis.containsKey(key)) {
-                redis.remove(key);
+        for (int i = 0; i < args.length; i++) {
+            if (redis.containsKey(args[i])) {
+                redis.remove(args[i]);
                 count++;
             }
         }
@@ -64,4 +67,29 @@ public class RedisServer {
         set(key, 0);
         return 0;
     }
+
+    public Map<String, Integer> zadd(HashMap<String, Integer> subset, String subsetName) {
+
+        for (Map.Entry<String, Integer> entry : subset.entrySet()) {
+            treeMap.put(subsetName + "_" + entry.getKey(), entry.getValue());
+        }
+        
+        TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
+        Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
+
+        return result;
+    }
+
+    private Map<String, Integer> getSubset(String subsetName, TreeMap<String, Integer> stringIntegerMap) {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+
+        for(Map.Entry<String, Integer> entry : stringIntegerMap.entrySet()) {
+            if (entry.getKey().startsWith(subsetName)) {
+                linkedHashMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return linkedHashMap;
+    }
+
 }

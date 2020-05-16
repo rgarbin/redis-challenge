@@ -5,7 +5,10 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @ShellComponent
@@ -19,13 +22,13 @@ public class PromptCommand {
     }
 
     @ShellMethod("Getting a key-value")
-    public Object get(String key) {
-        return redis.get(key);
+    public Object get(String arg) {
+        return redis.get(arg);
     }
 
     @ShellMethod("Removing keys")
-    public Integer del(List<String> keys) {
-        return redis.del(keys);
+    public Integer del(@ShellOption String[] args) {
+        return redis.del(args);
     }
 
     @ShellMethod("DB size")
@@ -38,5 +41,16 @@ public class PromptCommand {
         return redis.incr(key);
     }
 
+    @ShellMethod("Increase keys value")
+    public Map zadd( @ShellOption  String subsetName, @ShellOption HashMap<Integer, String> subset) {
+
+        HashMap<String, Integer> adjustedList = new HashMap<>();
+
+        subset.entrySet().stream().forEach(e -> {
+            adjustedList.put(e.getValue(), e.getKey());
+        });
+        
+        return redis.zadd(adjustedList, subsetName);
+    }
 
 }

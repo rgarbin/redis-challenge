@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-import java.util.Arrays;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,7 +79,13 @@ class RedisServerTest {
         redisServer.set("key1", "OK");
         redisServer.set("key2", "OK");
         redisServer.set("key3", "OK");
-        Integer count = redisServer.del(Arrays.asList("key1", "key2"));
+
+
+        String[] delList = new String[3];
+        delList[0] = "key1";
+        delList[1] = "key2";
+
+        Integer count = redisServer.del(delList);
         assertEquals(2, count);
     }
 
@@ -102,6 +109,58 @@ class RedisServerTest {
     void incrWhenKeuNotExists() {
         Integer count = redisServer.incr("key1");
         assertEquals(0, count);
+    }
+
+    @Test
+    void zadd() {
+        String subsetName  = "subset_";
+        String subsetName2  = "subset2_";
+
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("A", 3);
+        hashMap.put("B", 2);
+        hashMap.put("C", 1);
+        Map<String, Integer> sortedList = redisServer.zadd(hashMap, "subset");
+
+        // Checking key-value
+        assertEquals(1, sortedList.get(subsetName + "C"));
+        assertEquals(2, sortedList.get(subsetName + "B"));
+        assertEquals(3, sortedList.get(subsetName + "A"));
+
+        // Checking order
+        assertEquals(Arrays.asList(1, 2, 3).toString(), sortedList.values().toString());
+
+        // Adding new subset
+
+        HashMap<String, Integer> hashMap1 = new HashMap<>();
+        hashMap1.put("A", 1);
+        hashMap1.put("B", 2);
+        hashMap1.put("C", 3);
+        hashMap1.put("D", 1);
+        Map<String, Integer> sortedList2 = redisServer.zadd(hashMap1, "subset");
+
+        // Checking key-value
+        assertEquals(1, sortedList2.get(subsetName + "A"));
+        assertEquals(1, sortedList2.get(subsetName + "D"));
+        assertEquals(2, sortedList2.get(subsetName + "B"));
+        assertEquals(3, sortedList2.get(subsetName + "C"));
+
+        //Checking order
+        assertEquals(Arrays.asList(1, 1, 2, 3).toString(), sortedList2.values().toString());
+
+
+        // Checking second subset
+        HashMap<String, Integer> hashMapSubset2 = new HashMap<>();
+        hashMapSubset2.put("A", 10);
+        hashMapSubset2.put("B", 9);
+        hashMapSubset2.put("C", 8);
+        Map<String, Integer> sortedListSubSet2 = redisServer.zadd(hashMapSubset2, "subset2");
+
+        // Checking key-value
+        assertEquals(8, sortedListSubSet2.get(subsetName2 + "C"));
+        assertEquals(9, sortedListSubSet2.get(subsetName2 + "B"));
+        assertEquals(10, sortedListSubSet2.get(subsetName2 + "A"));
+        assertEquals(Arrays.asList(8, 9, 10).toString(), sortedListSubSet2.values().toString());
     }
 
 

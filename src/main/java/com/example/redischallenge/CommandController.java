@@ -4,7 +4,6 @@ package com.example.redischallenge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 
 @RestController
 public class CommandController {
@@ -24,7 +23,9 @@ public class CommandController {
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/cmd/{key}")
     Integer del(@PathVariable(value = "key") String key) {
-        return redisServer.del(Arrays.asList(key));
+        String[] delList = new String[1];
+        delList[0] = key;
+        return redisServer.del(delList);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/cmd/dbsize")
@@ -36,5 +37,6 @@ public class CommandController {
     Integer incr(@PathVariable(value = "key") String key) {
         return redisServer.incr(key);
     }
+
 
 }
