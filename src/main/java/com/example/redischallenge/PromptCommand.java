@@ -88,4 +88,9 @@ public class PromptCommand {
         return redis.zcard(key);
     }
 
+    @ShellMethod("Returns the rank of member in the sorted set stored at key, with the scores ordered from low to high")
+    public Integer zrank(String subsetName, String key) {
+        return redis.zrank(subsetName, key);
+    }
+
 }

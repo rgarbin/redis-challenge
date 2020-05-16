@@ -89,6 +89,28 @@ public class RedisServer {
         return result.size();
     }
 
+    public Integer zrank(String subsetName, String key) {
+        TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
+        Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
+
+        HashSet<Integer> rankList = new HashSet<>();
+
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
+
+            rankList.add(entry.getValue());
+            if (entry.getKey().equals(key)) {
+                break;
+            }
+        }
+
+        if (rankList.size() == 0) {
+            return null;
+        }
+
+        return rankList.size();
+
+    }
+
 
     private Map<String, Integer> getSubset(String subsetName, TreeMap<String, Integer> stringIntegerMap) {
         LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();

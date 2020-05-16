@@ -49,4 +49,9 @@ public class CommandController {
     Integer zcard(@PathVariable(value = "set") String set) {
         return redisServer.zcard(set);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/cmd/zrank/{set}/{key}")
+    Integer zrank(@PathVariable(value = "set") String set, @PathVariable(value = "key") String key) {
+        return redisServer.zrank(set, key);
+    }
 }

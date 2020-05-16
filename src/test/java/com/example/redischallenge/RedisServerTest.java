@@ -144,4 +144,21 @@ class RedisServerTest {
         assertEquals(3, count2);
     }
 
+    @Test
+    void zrank() {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("A", 3);
+        hashMap.put("B", 2);
+        hashMap.put("C", 1);
+        hashMap.put("D", 1);
+        hashMap.put("E", 1);
+        Integer count = redisServer.zadd(hashMap, "subset");
+        assertEquals(5, count);
+        assertEquals(2, redisServer.zrank( "subset", "B"));
+        assertEquals(3, redisServer.zrank( "subset", "A"));
+        assertEquals(1, redisServer.zrank( "subset", "E"));
+        assertEquals(1, redisServer.zrank( "subset", "D"));
+        assertEquals(1, redisServer.zrank( "subset", "C"));
+    }
+
 }
