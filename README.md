@@ -17,6 +17,7 @@ curl -X DELETE "http://localhost:8080/cmd/KEY"
 curl -d '{"Rafael": 1, "Luis": 2}' -H "Accept: application/json" -H "Content-Type: application/json" -X POST "http://localhost:8080/cmd/zadd/SET"
 curl -X GET "http://localhost:8080/cmd/zcard/SET"
 curl -X GET "http://localhost:8080/cmd/zrank/SET/KEY"
+curl -X GET "http://localhost:8080/cmd/zrange/SET?start=1&stop=2&withScore=false"
 ```
 
 

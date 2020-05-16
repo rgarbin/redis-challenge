@@ -11,6 +11,7 @@ public class RedisServer {
 
     private TimeoutMap<String, Object> redis;
     private TreeMap<String, Integer> treeMap;
+    public static final String WITHSCORE = "WITHSCORES";
 
     public RedisServer() {
         redis = new TimeoutMap<>();
@@ -111,6 +112,32 @@ public class RedisServer {
 
     }
 
+    public Object zrange(String subsetName, Integer start, Integer end, String withScores) {
+        TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
+        Map<String, Integer> sortedList =  getSubset(subsetName, stringIntegerMap);
+
+        LinkedHashMap<String, Integer> resultMap =  new LinkedHashMap<>();
+        Set<String> resultList = new HashSet<>();
+
+        if (start > 0 && end > 0) {
+            Integer index = 1;
+            for (Map.Entry<String, Integer> entry : sortedList.entrySet()) {
+                if (index >= start && index <= end) {
+                    if (WITHSCORE.equals(withScores)) {
+                        resultMap.put(entry.getKey(), entry.getValue());
+                    } else {
+                        resultList.add(entry.getKey());
+                    }
+                }
+                index++;
+            }
+        }
+
+        if (WITHSCORE.equals(withScores)) {
+            return resultMap;
+        }
+        return resultList;
+    }
 
     private Map<String, Integer> getSubset(String subsetName, TreeMap<String, Integer> stringIntegerMap) {
         LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();

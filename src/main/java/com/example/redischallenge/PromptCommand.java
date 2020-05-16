@@ -93,4 +93,9 @@ public class PromptCommand {
         return redis.zrank(subsetName, key);
     }
 
+    @ShellMethod("Returns the specified range of elements in the sorted set stored at key")
+    public Object zrange(String subsetName, Integer start, Integer end, @ShellOption(defaultValue = "") String withScores) {
+        return redis.zrange(subsetName, start, end, withScores);
+    }
+
 }

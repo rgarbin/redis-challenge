@@ -54,4 +54,17 @@ public class CommandController {
     Integer zrank(@PathVariable(value = "set") String set, @PathVariable(value = "key") String key) {
         return redisServer.zrank(set, key);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/cmd/zrange/{set}")
+    Object zrange(@PathVariable(value = "set") String set,
+                  @RequestParam(value = "start") Integer start,
+                  @RequestParam(value = "stop") Integer stop,
+                  @RequestParam(value = "withScore") boolean withScore) {
+
+        if (withScore) {
+            return redisServer.zrange(set, start, stop, RedisServer.WITHSCORE);
+        }
+        return redisServer.zrange(set, start, stop, null);
+
+    }
 }

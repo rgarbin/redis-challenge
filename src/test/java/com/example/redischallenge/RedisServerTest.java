@@ -37,18 +37,18 @@ class RedisServerTest {
 
     @Test
     void setWhenExpire() throws InterruptedException {
-        redisServer.set("key-0", "value-0", 5);
-        redisServer.set("key-1", "value-1", 10);
-        redisServer.set("key-2", "value-2", 15);
-        redisServer.set("key-3", "value-3", 50);
-        redisServer.set("key-4", "value-4", 60);
+        redisServer.set("key-0", "value-0", 2);
+        redisServer.set("key-1", "value-1", 3);
+        redisServer.set("key-2", "value-2", 4);
+        redisServer.set("key-3", "value-3", 10);
+        redisServer.set("key-4", "value-4", 10);
 
         assertEquals("value-0", redisServer.get("key-0"));
         assertEquals("value-1", redisServer.get("key-1"));
         assertEquals("value-2", redisServer.get("key-2"));
         assertEquals("value-3", redisServer.get("key-3"));
         assertEquals("value-4", redisServer.get("key-4"));
-        TimeUnit.MILLISECONDS.sleep(30000);
+        TimeUnit.MILLISECONDS.sleep(5000);
         assertEquals(null, redisServer.get("key-0"));
         assertEquals(null, redisServer.get("key-1"));
         assertEquals(null, redisServer.get("key-2"));
@@ -159,6 +159,23 @@ class RedisServerTest {
         assertEquals(1, redisServer.zrank( "subset", "E"));
         assertEquals(1, redisServer.zrank( "subset", "D"));
         assertEquals(1, redisServer.zrank( "subset", "C"));
+    }
+
+    @Test
+    void zrange() {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        hashMap.put("A", 3);
+        hashMap.put("B", 2);
+        hashMap.put("C", 1);
+        hashMap.put("D", 1);
+        hashMap.put("E", 1);
+        redisServer.zadd(hashMap, "subset");
+
+        Set<String> setList = (Set<String>) redisServer.zrange("subset", 1, 3, null);
+        assertEquals(Arrays.asList("C", "D", "E").toString(), setList.toString());
+
+        Map<String, Integer> mapList = (Map<String, Integer>) redisServer.zrange("subset", 4, 5, "WITHSCORES");
+        assertEquals("{B=2, A=3}", mapList.toString());
     }
 
 }
