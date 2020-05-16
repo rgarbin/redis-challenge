@@ -121,6 +121,8 @@ public class RedisServer {
 
         if (start < 0) {
             start = adjustNegativeIndex(start, sortedList.size());
+        } else {
+            start++;
         }
 
         if (end < 0) {

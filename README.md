@@ -1,6 +1,6 @@
 # Redis
 
-An implementation of a subset of [Redis](http://redis.io/) features using Java
+An implementation of a subset of [Redis](http://redis.io/) features using Java 8 with Spring-Shell + Spring-Web
 
 Challenge: [EngineeringRedisChallenge-1.pdf](EngineeringRedisChallenge-1.pdf).
 

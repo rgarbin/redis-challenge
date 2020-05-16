@@ -171,10 +171,10 @@ class RedisServerTest {
         hashMap.put("D", 1);
         redisServer.zadd(hashMap, "subset");
 
-        Set<String> setList = (Set<String>) redisServer.zrange("subset", 1, 3, null);
+        Set<String> setList = (Set<String>) redisServer.zrange("subset", 0, 3, null);
         assertEquals(Arrays.asList("C", "D", "E").toString(), setList.toString());
 
-        Map<String, Integer> mapList = (Map<String, Integer>) redisServer.zrange("subset", 4, 5, "WITHSCORES");
+        Map<String, Integer> mapList = (Map<String, Integer>) redisServer.zrange("subset", 3, 5, "WITHSCORES");
         assertEquals("{B=2, A=3}", mapList.toString());
     }
 
@@ -188,7 +188,7 @@ class RedisServerTest {
         hashMap.put("E", 1);
         redisServer.zadd(hashMap, "subset");
 
-        Set<String> setList = (Set<String>) redisServer.zrange("subset", 1, -1, null);
+        Set<String> setList = (Set<String>) redisServer.zrange("subset", 0, -1, null);
         assertEquals(Arrays.asList("C", "D", "E", "B", "A").toString(), setList.toString());
 
         Set<String> setList2 = (Set<String>) redisServer.zrange("subset", -2, -1, null);
