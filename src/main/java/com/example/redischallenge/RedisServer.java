@@ -18,11 +18,11 @@ public class RedisServer {
         treeMap = new TreeMap<String, Integer>();
     }
 
-    public String set(String key, Object value) {
+    synchronized String set(String key, Object value) {
         return set(key, value, null);
     }
 
-    public String set(String key, Object value, Integer seconds) {
+    synchronized String set(String key, Object value, Integer seconds) {
         try {
             if (seconds == null) {
                 redis.put(key, value);
@@ -35,14 +35,14 @@ public class RedisServer {
         return "OK";
     }
 
-    public Object get(String key) {
+    synchronized Object get(String key) {
         if (redis.containsKey(key)) {
             return redis.get(key);
         }
         return null;
     }
 
-    public Integer del(String[] args) {
+    synchronized Integer del(String[] args) {
         Integer count = 0;
 
         for (int i = 0; i < args.length; i++) {
@@ -55,11 +55,11 @@ public class RedisServer {
         return count;
     }
 
-    public Integer dbsize() {
+    synchronized Integer dbsize() {
         return redis.size();
     }
 
-    public Integer incr(String key) {
+    synchronized Integer incr(String key) {
         if (redis.containsKey(key)) {
             Integer value = (Integer) get(key);
             Integer next = value + 1;
@@ -70,7 +70,7 @@ public class RedisServer {
         return 0;
     }
 
-    public Integer zadd(Map<String, Integer> subset, String subsetName) {
+    synchronized Integer zadd(Map<String, Integer> subset, String subsetName) {
 
         Integer count = 0;
         for (Map.Entry<String, Integer> entry : subset.entrySet()) {
@@ -83,14 +83,14 @@ public class RedisServer {
         return count;
     }
 
-    public Integer zcard(String subsetName) {
+    synchronized Integer zcard(String subsetName) {
         TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
         Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
 
         return result.size();
     }
 
-    public Integer zrank(String subsetName, String key) {
+    synchronized Integer zrank(String subsetName, String key) {
         TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
         Map<String, Integer> result =  getSubset(subsetName, stringIntegerMap);
 
@@ -112,7 +112,7 @@ public class RedisServer {
 
     }
 
-    public Object zrange(String subsetName, Integer start, Integer end, String withScores) {
+    synchronized Object zrange(String subsetName, Integer start, Integer end, String withScores) {
         TreeMap<String, Integer> stringIntegerMap = (TreeMap<String, Integer>) TreeMapComparator.sortByValues(treeMap);
         Map<String, Integer> sortedList =  getSubset(subsetName, stringIntegerMap);
 
