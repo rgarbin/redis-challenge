@@ -1,12 +1,12 @@
 package com.example.redischallenge;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class TimeoutMap<K, V> extends HashMap<K, V> implements Map<K, V> {
+public class TimeoutMap<K, V> extends ConcurrentHashMap<K, V> implements Map<K, V> {
 
     private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(5);
 

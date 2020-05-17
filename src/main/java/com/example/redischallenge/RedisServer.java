@@ -46,7 +46,7 @@ public class RedisServer {
         Integer count = 0;
 
         for (int i = 0; i < args.length; i++) {
-            if (redis.containsKey(args[i])) {
+            if (args[i] != null && redis.containsKey(args[i])) {
                 redis.remove(args[i]);
                 count++;
             }
